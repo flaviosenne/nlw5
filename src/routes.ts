@@ -1,9 +1,10 @@
 import { Router} from 'express'
+import { SettingsController } from './controllers/SettingsController'
 
 const routes = Router()
+const settingController = new SettingsController()
 
-routes.get('/', (req, res) => {
-    res.json('olá')
-})
+routes.post('/settings', settingController.save)
+routes.get('/settings', settingController.get)
 
 export { routes }
