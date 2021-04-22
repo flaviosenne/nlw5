@@ -1,7 +1,37 @@
 import { io} from '../app'
+import { ConnectionService} from '../services/ConnectionService'
+import { UserService} from '../services/UserService'
+import { MessageService} from '../services/MessageService'
 
 io.on('connect', (socket) => {
-    socket.on('client_first_access', params =>{
-        console.log(params)
+    const connectionService = new ConnectionService()
+    const userService = new UserService()
+    const messageService = new MessageService()
+    
+    socket.on('client_first_access', async params =>{
+        let user_id = null
+        const socket_id = socket.id
+
+        const { text, email} = params
+
+        const existUser = await userService.findByEmail(email)
+
+        if(!existUser){
+            const user = await userService.save(email)
+           
+            user_id = user.id
+            await connectionService.save({socket_id, user_id})
+        }
+        user_id = existUser.id
+        const connection = await connectionService.findByUserId(existUser.id)
+        
+        if(!connection){
+            await connectionService.save({socket_id,user_id})
+        }
+      
+        connection.socket_id = socket.id
+        await connectionService.save(connection)
+
+        await messageService.save({text, user_id })
     })
 })
