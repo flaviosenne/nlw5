@@ -40,6 +40,13 @@ class SettingService {
 
         return settings
     }
+
+    async update(username: string, chat: boolean){
+        await this.settingRepository.
+        createQueryBuilder().update(Setting)
+        .set({chat})
+        .where("username = :username", {username}).execute()
+    }
 }
 
 export { SettingService}
