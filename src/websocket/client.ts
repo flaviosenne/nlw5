@@ -22,16 +22,19 @@ io.on('connect', (socket) => {
             user_id = user.id
             await connectionService.save({socket_id, user_id})
         }
-        user_id = existUser.id
-        const connection = await connectionService.findByUserId(existUser.id)
-        
-        if(!connection){
-            await connectionService.save({socket_id,user_id})
+        else{
+            user_id = existUser.id
+            const connection = await connectionService.findByUserId(existUser.id)
+            
+            if(!connection){
+                await connectionService.save({socket_id,user_id})
+            }   
+            connection.socket_id = socket.id
+            
+            await connectionService.save(connection)
+            
+            await messageService.save({text, user_id })
         }
-      
-        connection.socket_id = socket.id
-        await connectionService.save(connection)
 
-        await messageService.save({text, user_id })
     })
 })

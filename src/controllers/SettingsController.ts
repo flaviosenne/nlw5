@@ -22,6 +22,16 @@ class SettingsController {
     async get(req: Request,res: Response){
         return res.status(200).json(await new SettingService().get())
     }
+
+    async findByUserName(req: Request,res: Response){
+        const { username} = req.params
+
+        const settingsService = new SettingService()
+
+        const settings =await settingsService.findByUserName(username)
+
+        return res.json(settings)
+    }
 }
 
 export { SettingsController }

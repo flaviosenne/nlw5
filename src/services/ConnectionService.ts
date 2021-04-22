@@ -23,9 +23,7 @@ class ConnectionService {
             admin_id, 
             id
         })
-
         this.connectionRepository.save(connection)
-
         return connection
     }
     async findByUserId(id: string){
@@ -34,7 +32,7 @@ class ConnectionService {
         if(connection) return connection
 
         return null
-    }
+    }   
 }
 
 export { ConnectionService }

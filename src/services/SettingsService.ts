@@ -35,6 +35,11 @@ class SettingService {
 
         return settings
     }
+    async findByUserName(username: string){
+        const settings = this.settingRepository.findOne({username})
+
+        return settings
+    }
 }
 
 export { SettingService}
