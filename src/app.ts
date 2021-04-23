@@ -15,6 +15,9 @@ app.set('view engine', 'html')
 app.get('/pages/client', (req, res) => {
     res.render('client')
 })
+app.get('/pages/admin', (req, res) => {
+    res.render('admin')
+})
 
 const http = createServer(app)
 const io = new Server(http)
